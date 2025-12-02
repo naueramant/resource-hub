@@ -1,5 +1,6 @@
-import { Input } from "@mui/joy";
+import { Box, Input } from "@mui/joy";
 import { forwardRef } from "react";
+import { IoCloseOutline } from "react-icons/io5";
 
 interface SearchBarProps {
   value: string;
@@ -41,6 +42,30 @@ const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(
           <span style={{ fontSize: compact ? "1rem" : "1.2rem", opacity: 0.6 }}>
             🔍
           </span>
+        }
+        endDecorator={
+          value && (
+            <Box
+              component="button"
+              onClick={() => onChange("")}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                border: "none",
+                background: "none",
+                cursor: "pointer",
+                padding: 0,
+                color: "text.tertiary",
+                fontSize: compact ? "1.25rem" : "1.5rem",
+                "&:hover": {
+                  color: "text.secondary",
+                },
+              }}
+            >
+              <IoCloseOutline />
+            </Box>
+          )
         }
       />
     );

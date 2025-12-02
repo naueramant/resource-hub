@@ -1,6 +1,8 @@
-import { Box, Card, Typography } from "@mui/joy";
-import type { FunctionComponent } from "react";
+import { Box, Card, IconButton, Typography } from "@mui/joy";
+import type { FunctionComponent, MouseEvent } from "react";
+import { IoStar, IoStarOutline } from "react-icons/io5";
 import type { Link } from "../models/link";
+import { useFavoritesStore } from "../stores/favorites";
 
 interface LinkCardProps {
   link: Link;
@@ -41,6 +43,15 @@ const getDeviconClass = (name: string, variant: string): string => {
 };
 
 const LinkCard: FunctionComponent<LinkCardProps> = ({ link }) => {
+  const { isFavorite, toggleFavorite } = useFavoritesStore();
+  const favorite = isFavorite(link.href);
+
+  const handleFavoriteClick = (e: MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleFavorite(link.href);
+  };
+
   const renderIcon = () => {
     if (!link.icon) return null;
 
@@ -152,6 +163,21 @@ const LinkCard: FunctionComponent<LinkCardProps> = ({ link }) => {
             </Typography>
           )}
         </Box>
+        <IconButton
+          variant="plain"
+          color={favorite ? "warning" : "neutral"}
+          size="sm"
+          onClick={handleFavoriteClick}
+          sx={{
+            opacity: favorite ? 1 : 0,
+            transition: "opacity 0.2s",
+            ".MuiCard-root:hover &": {
+              opacity: 1,
+            },
+          }}
+        >
+          {favorite ? <IoStar /> : <IoStarOutline />}
+        </IconButton>
         <Box
           sx={{
             color: "text.tertiary",
