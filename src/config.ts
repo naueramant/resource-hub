@@ -9,14 +9,24 @@ export const config: Config = {
     "https://github.com/naueramant/devhub/blob/master/src/config.ts",
 
   // Sorting options
-  categorySorting: "alphabetical",
-  linkSorting: "defined",
+  categorySorting: "defined",
+  linkSorting: "alphabetical",
 
   // Optional: Define category order when categorySorting is "defined"
-  // categories: ["Development", "DevOps", "Infrastructure", "Observability", "Databases", "Documentation", "Project Management", "Communication", "Design"],
+  categories: [
+    "Development",
+    "DevOps",
+    "Infrastructure",
+    "Observability",
+    "Databases",
+    "Documentation",
+    "Project Management",
+    "Communication",
+    "Design",
+  ],
 
   // Grid layout
-  gridColumns: 3,
+  gridColumns: 4,
 
   // How links open: "same-tab", "new-tab", or "new-window"
   linkTarget: "new-tab",
