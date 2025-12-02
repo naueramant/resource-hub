@@ -6,7 +6,92 @@ interface LinkCardProps {
   link: Link;
 }
 
+const isUrl = (str: string): boolean => {
+  return (
+    str.startsWith("http://") ||
+    str.startsWith("https://") ||
+    str.startsWith("/")
+  );
+};
+
+const isDevicon = (str: string): boolean => {
+  return str.startsWith("devicon/");
+};
+
+const parseDevicon = (
+  str: string
+): { name: string; variant: string; usesSvg: boolean } => {
+  const fullName = str.replace("devicon/", "");
+  const parts = fullName.split("-");
+  const variant = parts.pop() || "original";
+  const name = parts.join("-");
+
+  // Original and original-wordmark versions need SVG, others can use font
+  const usesSvg = variant.includes("original");
+
+  return { name, variant, usesSvg };
+};
+
+const getDeviconSvgUrl = (name: string, variant: string): string => {
+  return `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${name}/${name}-${variant}.svg`;
+};
+
+const getDeviconClass = (name: string, variant: string): string => {
+  return `devicon-${name}-${variant}`;
+};
+
 const LinkCard: FunctionComponent<LinkCardProps> = ({ link }) => {
+  const renderIcon = () => {
+    if (!link.icon) return null;
+
+    if (isDevicon(link.icon)) {
+      const { name, variant, usesSvg } = parseDevicon(link.icon);
+
+      if (usesSvg) {
+        return (
+          <Box
+            component="img"
+            src={getDeviconSvgUrl(name, variant)}
+            alt={`${link.title} icon`}
+            sx={{
+              width: 28,
+              height: 28,
+              objectFit: "contain",
+            }}
+          />
+        );
+      }
+
+      return (
+        <Box
+          component="i"
+          className={getDeviconClass(name, variant)}
+          sx={{
+            fontSize: "1.75rem",
+            color: "text.primary",
+          }}
+        />
+      );
+    }
+
+    if (isUrl(link.icon)) {
+      return (
+        <Box
+          component="img"
+          src={link.icon}
+          alt={`${link.title} icon`}
+          sx={{
+            width: 28,
+            height: 28,
+            objectFit: "contain",
+          }}
+        />
+      );
+    }
+
+    return link.icon;
+  };
+
   return (
     <Card
       component="a"
@@ -45,7 +130,7 @@ const LinkCard: FunctionComponent<LinkCardProps> = ({ link }) => {
               flexShrink: 0,
             }}
           >
-            {link.icon}
+            {renderIcon()}
           </Box>
         )}
         <Box sx={{ flex: 1, minWidth: 0 }}>

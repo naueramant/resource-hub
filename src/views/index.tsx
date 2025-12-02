@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import LinkGrid from "../components/LinkGrid";
 import SearchBar from "../components/SearchBar";
-import { links } from "../config";
+import { config, links } from "../config";
 
 const IndexView: FunctionComponent = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -13,6 +13,21 @@ const IndexView: FunctionComponent = () => {
   const stickyInputRef = useRef<HTMLInputElement>(null);
   const heroInputRef = useRef<HTMLInputElement>(null);
   const activeInputRef = useRef<"sticky" | "hero" | null>(null);
+
+  // Set page title and favicon
+  useEffect(() => {
+    document.title = `${config.companyName} Developer Portal`;
+
+    // Update favicon
+    let link = document.querySelector<HTMLLinkElement>("link[rel~='icon']");
+    if (!link) {
+      link = document.createElement("link");
+      link.rel = "icon";
+      document.head.appendChild(link);
+    }
+    link.type = "image/svg+xml";
+    link.href = config.companyLogo;
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
