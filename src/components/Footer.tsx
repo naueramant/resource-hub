@@ -4,6 +4,11 @@ import { config } from "../config";
 
 const Footer: FunctionComponent = () => {
   const editUrl = config.githubEditUrl;
+
+  if (!editUrl) {
+    return null;
+  }
+
   return (
     <Box
       component="footer"
