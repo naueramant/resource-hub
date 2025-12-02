@@ -1,6 +1,7 @@
 # DevHub
-
-A modern, customizable developer portal for quick access to all your team's essential tools and resources.
+<center>
+  <img src="assets/screenshot.png" alt="DevHub Screenshot" width="600" style="border-radius: 12px;"/>
+</center>
 
 ## Features
 
