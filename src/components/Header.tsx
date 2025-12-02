@@ -28,30 +28,39 @@ const Header: FunctionComponent = () => {
           flex: 1,
         }}
       >
-        <Box
-          component="img"
-          src={config.companyLogo}
-          alt={`${config.companyName} logo`}
-          sx={{
-            height: 36,
-            width: "auto",
-            objectFit: "contain",
-            flexShrink: 0,
-          }}
-        />
-        <Typography
-          level="h4"
-          component="h1"
-          fontWeight={600}
-          sx={{
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-            display: { xs: "none", sm: "block" },
-          }}
-        >
-          {config.companyName}
-        </Typography>
+        {config.companyLogo && (
+          <Box
+            component="img"
+            src={config.companyLogo}
+            alt={config.companyName ? `${config.companyName} logo` : "Logo"}
+            sx={{
+              height: 36,
+              width: "auto",
+              objectFit: "contain",
+              flexShrink: 0,
+            }}
+          />
+        )}
+        {config.companyName && (
+          <Typography
+            level="h4"
+            component="h1"
+            fontWeight={600}
+            sx={{
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              display: { xs: "none", sm: "block" },
+            }}
+          >
+            {config.companyName}
+          </Typography>
+        )}
+        {!config.companyLogo && !config.companyName && (
+          <Typography level="h4" component="h1" fontWeight={600}>
+            Developer Hub
+          </Typography>
+        )}
       </Box>
       <Box
         sx={{ display: "flex", alignItems: "center", gap: 1.5, flexShrink: 0 }}

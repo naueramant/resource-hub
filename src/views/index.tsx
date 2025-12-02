@@ -38,17 +38,21 @@ const IndexView: FunctionComponent = () => {
 
   // Set page title and favicon
   useEffect(() => {
-    document.title = `${config.companyName} Developer Portal`;
+    document.title = config.companyName
+      ? `${config.companyName} Developer Hub`
+      : "Developer Hub";
 
-    // Update favicon
-    let link = document.querySelector<HTMLLinkElement>("link[rel~='icon']");
-    if (!link) {
-      link = document.createElement("link");
-      link.rel = "icon";
-      document.head.appendChild(link);
+    // Update favicon only if companyLogo is set
+    if (config.companyLogo) {
+      let link = document.querySelector<HTMLLinkElement>("link[rel~='icon']");
+      if (!link) {
+        link = document.createElement("link");
+        link.rel = "icon";
+        document.head.appendChild(link);
+      }
+      link.type = "image/svg+xml";
+      link.href = config.companyLogo;
     }
-    link.type = "image/svg+xml";
-    link.href = config.companyLogo;
   }, []);
 
   useEffect(() => {

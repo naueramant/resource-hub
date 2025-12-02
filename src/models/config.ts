@@ -3,10 +3,10 @@ export type LinkTarget = "same-tab" | "new-tab" | "new-window";
 
 export interface Config {
   /** Company name displayed in the header and page title */
-  companyName: string;
+  companyName?: string;
 
   /** Path to the company logo (relative to public folder or absolute URL) */
-  companyLogo: string;
+  companyLogo?: string;
 
   /** URL to edit the config file on GitHub. Leave empty to hide the footer */
   githubEditUrl?: string;

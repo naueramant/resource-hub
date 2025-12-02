@@ -3,7 +3,7 @@ import type { Link } from "./models/link";
 
 // Company branding configuration
 export const config: Config = {
-  companyName: "Acme Corp and something",
+  companyName: "UNIwise",
   companyLogo: "/logo.svg", // Place your logo in the public folder
   githubEditUrl: "https://github.com/naueramant/devhub/edit/main/src/config.ts",
 
@@ -21,7 +21,7 @@ export const config: Config = {
   linkTarget: "new-tab",
 };
 
-// Developer portal links
+// Developer hub links
 export const links: Link[] = [
   // Development
   {
