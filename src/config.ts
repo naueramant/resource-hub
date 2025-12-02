@@ -3,7 +3,7 @@ import type { Link } from "./models/link";
 
 // Company branding configuration
 export const config: Config = {
-  companyName: "Acme Corp",
+  companyName: "Acme Corp and something",
   companyLogo: "/logo.svg", // Place your logo in the public folder
   githubEditUrl:
     "https://github.com/your-org/developer-portal/edit/main/src/config.ts",

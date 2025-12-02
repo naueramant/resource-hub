@@ -74,7 +74,7 @@ const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(
             <Typography
               component="kbd"
               sx={{
-                display: "flex",
+                display: { xs: "none", sm: "flex" },
                 alignItems: "center",
                 gap: 0.25,
                 px: 0.75,

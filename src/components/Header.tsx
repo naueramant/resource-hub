@@ -14,11 +14,20 @@ const Header: FunctionComponent = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        px: 4,
+        px: { xs: 2, sm: 4 },
         py: 2.5,
+        gap: 2,
       }}
     >
-      <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 2,
+          minWidth: 0,
+          flex: 1,
+        }}
+      >
         <Box
           component="img"
           src={config.companyLogo}
@@ -27,13 +36,26 @@ const Header: FunctionComponent = () => {
             height: 36,
             width: "auto",
             objectFit: "contain",
+            flexShrink: 0,
           }}
         />
-        <Typography level="h4" component="h1" fontWeight={600}>
+        <Typography
+          level="h4"
+          component="h1"
+          fontWeight={600}
+          sx={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            display: { xs: "none", sm: "block" },
+          }}
+        >
           {config.companyName}
         </Typography>
       </Box>
-      <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+      <Box
+        sx={{ display: "flex", alignItems: "center", gap: 1.5, flexShrink: 0 }}
+      >
         {editUrl && (
           <Tooltip title="Suggest changes on GitHub" placement="bottom">
             <Box
@@ -45,7 +67,7 @@ const Header: FunctionComponent = () => {
                 display: "flex",
                 alignItems: "center",
                 gap: 0.75,
-                px: 1.5,
+                px: { xs: 1, sm: 1.5 },
                 py: 0.5,
                 borderRadius: "lg",
                 backgroundColor: "background.level1",
@@ -61,7 +83,12 @@ const Header: FunctionComponent = () => {
               }}
             >
               <IoLogoGithub style={{ fontSize: "1.1rem" }} />
-              Edit
+              <Box
+                component="span"
+                sx={{ display: { xs: "none", sm: "inline" } }}
+              >
+                Edit
+              </Box>
             </Box>
           </Tooltip>
         )}
