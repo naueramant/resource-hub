@@ -1,5 +1,6 @@
 export type SortingOption = "alphabetical" | "defined";
 export type LinkTarget = "same-tab" | "new-tab" | "new-window";
+export type CardLayout = "default" | "compact";
 
 export interface Config {
   /** Company name displayed in the header and page title */
@@ -45,4 +46,12 @@ export interface Config {
    * @default "new-tab"
    */
   linkTarget?: LinkTarget;
+
+  /**
+   * Card layout style.
+   * - "default": Vertical layout with icon on top
+   * - "compact": Horizontal layout with icon on the left
+   * @default "default"
+   */
+  cardLayout?: CardLayout;
 }

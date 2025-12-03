@@ -28,6 +28,9 @@ export const config: Config = {
   // Grid layout
   gridColumns: 4,
 
+  // Card layout: "default" (vertical with icon on top) or "compact" (horizontal with icon on left)
+  cardLayout: "compact",
+
   // How links open: "same-tab", "new-tab", or "new-window"
   linkTarget: "new-tab",
 };

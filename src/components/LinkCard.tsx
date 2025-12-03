@@ -1,5 +1,5 @@
 import { Box, Card, IconButton, Tooltip, Typography } from "@mui/joy";
-import type { FunctionComponent, MouseEvent } from "react";
+import { forwardRef, type MouseEvent } from "react";
 import { IoIosLink } from "react-icons/io";
 import { IoStar, IoStarOutline } from "react-icons/io5";
 import { config } from "../config";
@@ -8,6 +8,7 @@ import { useFavoritesStore } from "../stores/favorites";
 
 interface LinkCardProps {
   link: Link;
+  isSelected?: boolean;
 }
 
 const isUrl = (str: string): boolean => {
@@ -44,9 +45,10 @@ const getDeviconClass = (name: string, variant: string): string => {
   return `devicon-${name}-${variant}`;
 };
 
-const LinkCard: FunctionComponent<LinkCardProps> = ({ link }) => {
-  const { isFavorite, toggleFavorite } = useFavoritesStore();
-  const favorite = isFavorite(link.href);
+const LinkCard = forwardRef<HTMLAnchorElement, LinkCardProps>(
+  ({ link, isSelected = false }, ref) => {
+    const { isFavorite, toggleFavorite } = useFavoritesStore();
+    const favorite = isFavorite(link.href);
 
   const handleFavoriteClick = (e: MouseEvent) => {
     e.preventDefault();
@@ -125,8 +127,106 @@ const LinkCard: FunctionComponent<LinkCardProps> = ({ link }) => {
     }
   };
 
+  const isCompact = config.cardLayout === "compact";
+
+  if (isCompact) {
+    return (
+      <Card
+        ref={ref}
+        component="a"
+        href={link.href}
+        target={getLinkTarget()}
+        rel="noopener noreferrer"
+        onClick={handleClick}
+        variant="outlined"
+        sx={{
+          textDecoration: "none",
+          transition: "all 0.2s ease-in-out",
+          cursor: "pointer",
+          p: 2,
+          borderRadius: "lg",
+          backgroundColor: isSelected ? "background.level1" : "background.surface",
+          borderColor: isSelected ? "primary.500" : "divider",
+          boxShadow: isSelected ? "0 0 0 2px var(--joy-palette-primary-500)" : "none",
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "flex-start",
+          gap: 2,
+          "&:hover": {
+            borderColor: "primary.400",
+            transform: "translateY(-2px)",
+            boxShadow: "0 8px 16px -4px rgba(0, 0, 0, 0.1)",
+            backgroundColor: "background.level1",
+          },
+        }}
+      >
+        {/* Icon */}
+        <Box
+          sx={{
+            width: 40,
+            height: 40,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: "md",
+            backgroundColor: "background.level2",
+            fontSize: "1.25rem",
+            flexShrink: 0,
+          }}
+        >
+          {renderIcon()}
+        </Box>
+
+        {/* Content */}
+        <Box sx={{ flex: 1, minWidth: 0 }}>
+          <Typography level="title-sm" fontWeight={600} noWrap>
+            {link.title}
+          </Typography>
+          {link.description && (
+            <Typography
+              level="body-xs"
+              sx={{
+                color: "text.tertiary",
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+              }}
+            >
+              {link.description}
+            </Typography>
+          )}
+        </Box>
+
+        {/* Favorite button */}
+        <Tooltip
+          title={favorite ? "Remove from favorites" : "Add to favorites"}
+          placement="top"
+        >
+          <IconButton
+            variant="plain"
+            color={favorite ? "warning" : "neutral"}
+            size="sm"
+            onClick={handleFavoriteClick}
+            sx={{
+              opacity: favorite ? 1 : 0.4,
+              transition: "opacity 0.2s",
+              flexShrink: 0,
+              "&:hover": {
+                opacity: 1,
+              },
+            }}
+          >
+            {favorite ? <IoStar /> : <IoStarOutline />}
+          </IconButton>
+        </Tooltip>
+      </Card>
+    );
+  }
+
   return (
     <Card
+      ref={ref}
       component="a"
       href={link.href}
       target={getLinkTarget()}
@@ -139,8 +239,9 @@ const LinkCard: FunctionComponent<LinkCardProps> = ({ link }) => {
         cursor: "pointer",
         p: 3,
         borderRadius: "xl",
-        backgroundColor: "background.surface",
-        borderColor: "divider",
+        backgroundColor: isSelected ? "background.level1" : "background.surface",
+        borderColor: isSelected ? "primary.500" : "divider",
+        boxShadow: isSelected ? "0 0 0 2px var(--joy-palette-primary-500)" : "none",
         position: "relative",
         "&:hover": {
           borderColor: "primary.400",
@@ -215,6 +316,9 @@ const LinkCard: FunctionComponent<LinkCardProps> = ({ link }) => {
       )}
     </Card>
   );
-};
+  }
+);
+
+LinkCard.displayName = "LinkCard";
 
 export default LinkCard;

@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/joy";
-import { useEffect, useRef, useState, type FunctionComponent } from "react";
+import { useCallback, useEffect, useRef, useState, type FunctionComponent } from "react";
 import Header from "../components/Header";
-import LinkGrid from "../components/LinkGrid";
+import LinkGrid, { type LinkGridHandle } from "../components/LinkGrid";
 import SearchBar from "../components/SearchBar";
 import TagFilter from "../components/TagFilter";
 import { config, links } from "../config";
@@ -14,10 +14,71 @@ const IndexView: FunctionComponent = () => {
   const [searchQuery, setSearchQuery] = useQueryParamState("q");
   const [selectedTags, setSelectedTags] = useQueryParamArrayState("tags");
   const [showStickySearch, setShowStickySearch] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState<number>(-1);
   const heroSearchRef = useRef<HTMLDivElement>(null);
   const stickyInputRef = useRef<HTMLInputElement>(null);
   const heroInputRef = useRef<HTMLInputElement>(null);
   const activeInputRef = useRef<"sticky" | "hero" | null>(null);
+  const linkGridRef = useRef<LinkGridHandle>(null);
+
+  // Reset selection when search query or tags change, select first if searching
+  useEffect(() => {
+    if (searchQuery || selectedTags.length > 0) {
+      setSelectedIndex(0);
+    } else {
+      setSelectedIndex(-1);
+    }
+  }, [searchQuery, selectedTags]);
+
+  // Open the selected link
+  const openSelectedLink = useCallback(() => {
+    const visibleLinks = linkGridRef.current?.getVisibleLinks() ?? [];
+    if (selectedIndex >= 0 && selectedIndex < visibleLinks.length) {
+      const link = visibleLinks[selectedIndex];
+      if (config.linkTarget === "new-window") {
+        window.open(link.href, "_blank", "noopener,noreferrer,width=1200,height=800");
+      } else if (config.linkTarget === "same-tab") {
+        window.location.href = link.href;
+      } else {
+        window.open(link.href, "_blank", "noopener,noreferrer");
+      }
+    }
+  }, [selectedIndex]);
+
+  // Keyboard navigation for cards
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const visibleLinks = linkGridRef.current?.getVisibleLinks() ?? [];
+      const total = visibleLinks.length;
+
+      if (total === 0) return;
+
+      // Only handle navigation when search is focused or has query
+      const isSearchFocused = activeInputRef.current !== null;
+      const hasSearchQuery = searchQuery || selectedTags.length > 0;
+
+      if (!isSearchFocused && !hasSearchQuery) return;
+
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        setSelectedIndex((prev) => (prev < total - 1 ? prev + 1 : prev));
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        setSelectedIndex((prev) => (prev > 0 ? prev - 1 : prev));
+      } else if (e.key === "Enter" && selectedIndex >= 0) {
+        e.preventDefault();
+        openSelectedLink();
+      } else if (e.key === "Escape") {
+        setSelectedIndex(-1);
+        // Blur search input
+        stickyInputRef.current?.blur();
+        heroInputRef.current?.blur();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [searchQuery, selectedTags, selectedIndex, openSelectedLink]);
 
   // Keyboard shortcut for search focus (Ctrl+K / Cmd+K)
   useEffect(() => {
@@ -53,6 +114,9 @@ const IndexView: FunctionComponent = () => {
       link.type = "image/svg+xml";
       link.href = config.companyLogo;
     }
+
+    // Auto-focus search on page load
+    heroInputRef.current?.focus();
   }, []);
 
   useEffect(() => {
@@ -187,9 +251,11 @@ const IndexView: FunctionComponent = () => {
             </Box>
           </Box>
           <LinkGrid
+            ref={linkGridRef}
             links={links}
             searchQuery={searchQuery}
             selectedTags={selectedTags}
+            selectedIndex={selectedIndex}
           />
         </Box>
       </Box>

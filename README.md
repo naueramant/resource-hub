@@ -70,6 +70,7 @@ export const config: Config = {
   linkSorting: "defined", // "alphabetical" | "defined"
   categories: ["Dev", "DevOps"], // Optional: Custom category order
   gridColumns: 4, // Number of columns (default: 4)
+  cardLayout: "default", // "default" (vertical) | "compact" (horizontal)
   linkTarget: "new-tab", // "same-tab" | "new-tab" | "new-window"
 };
 ```

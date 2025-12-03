@@ -1,5 +1,5 @@
 import { Box, Chip, Link as MuiLink, Typography } from "@mui/joy";
-import type { FunctionComponent } from "react";
+import { forwardRef, useImperativeHandle, useMemo } from "react";
 import { IoSearchOutline, IoStar } from "react-icons/io5";
 import { config } from "../config";
 import type { Link } from "../models/link";
@@ -10,14 +10,16 @@ interface LinkGridProps {
   links: Link[];
   searchQuery: string;
   selectedTags?: string[];
+  selectedIndex?: number;
 }
 
-const LinkGrid: FunctionComponent<LinkGridProps> = ({
-  links,
-  searchQuery,
-  selectedTags = [],
-}) => {
-  const { favorites } = useFavoritesStore();
+export interface LinkGridHandle {
+  getVisibleLinks: () => Link[];
+}
+
+const LinkGrid = forwardRef<LinkGridHandle, LinkGridProps>(
+  ({ links, searchQuery, selectedTags = [], selectedIndex }, ref) => {
+    const { favorites } = useFavoritesStore();
 
   // Calculate minimum column width based on grid columns (default 4)
   const gridColumns = config.gridColumns ?? 4;
@@ -126,6 +128,20 @@ const LinkGrid: FunctionComponent<LinkGridProps> = ({
     }
   }
 
+  // Build flat list of visible links in display order for keyboard navigation
+  const visibleLinks = useMemo(() => {
+    const result: Link[] = [...favoriteLinks];
+    for (const category of sortedCategories) {
+      result.push(...groupedLinks[category]);
+    }
+    return result;
+  }, [favoriteLinks, sortedCategories, groupedLinks]);
+
+  // Expose getVisibleLinks method via ref
+  useImperativeHandle(ref, () => ({
+    getVisibleLinks: () => visibleLinks,
+  }), [visibleLinks]);
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 5 }}>
       {favoriteLinks.length > 0 && (
@@ -158,9 +174,16 @@ const LinkGrid: FunctionComponent<LinkGridProps> = ({
               gap: 2,
             }}
           >
-            {favoriteLinks.map((link) => (
-              <LinkCard key={link.href} link={link} />
-            ))}
+            {favoriteLinks.map((link) => {
+              const globalIndex = visibleLinks.findIndex((l) => l.href === link.href);
+              return (
+                <LinkCard
+                  key={link.href}
+                  link={link}
+                  isSelected={selectedIndex === globalIndex}
+                />
+              );
+            })}
           </Box>
         </Box>
       )}
@@ -190,14 +213,24 @@ const LinkGrid: FunctionComponent<LinkGridProps> = ({
               gap: 2,
             }}
           >
-            {groupedLinks[category].map((link) => (
-              <LinkCard key={link.href} link={link} />
-            ))}
+            {groupedLinks[category].map((link) => {
+              const globalIndex = visibleLinks.findIndex((l) => l.href === link.href);
+              return (
+                <LinkCard
+                  key={link.href}
+                  link={link}
+                  isSelected={selectedIndex === globalIndex}
+                />
+              );
+            })}
           </Box>
         </Box>
       ))}
     </Box>
   );
-};
+  }
+);
+
+LinkGrid.displayName = "LinkGrid";
 
 export default LinkGrid;
