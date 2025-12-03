@@ -42,7 +42,7 @@ export const useSettingsStore = create<SettingsState>()(
       setHasHydrated: (state) => set({ _hasHydrated: state }),
     }),
     {
-      name: "devhub-settings",
+      name: "resource-hub-settings",
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);
       },

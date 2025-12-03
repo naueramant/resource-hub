@@ -60,7 +60,7 @@ const Header: FunctionComponent = () => {
         )}
         {!config.companyLogo && !config.companyName && (
           <Typography level="h4" component="h1" fontWeight={600}>
-            Developer Hub
+            Resource Hub
           </Typography>
         )}
       </Box>

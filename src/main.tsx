@@ -22,7 +22,7 @@ createRoot(document.getElementById("root")!).render(
     <CssVarsProvider
       theme={theme}
       defaultMode="system"
-      modeStorageKey="devhub-theme-mode"
+      modeStorageKey="resource-hub-theme-mode"
     >
       <CssBaseline />
       <Main>

@@ -93,7 +93,7 @@ const SettingsDialogContent: FunctionComponent<{
       <DialogTitle>Settings</DialogTitle>
       <DialogContent sx={{ gap: 3, overflowX: "hidden" }}>
         <Typography level="body-sm" sx={{ color: "text.tertiary" }}>
-          Customize your Developer Hub experience. These settings are saved
+          Customize your Resource Hub experience. These settings are saved
           locally in your browser.
         </Typography>
 

@@ -117,8 +117,8 @@ const IndexView: FunctionComponent = () => {
   // Set page title and favicon
   useEffect(() => {
     document.title = config.companyName
-      ? `${config.companyName} Developer Hub`
-      : "Developer Hub";
+      ? `${config.companyName} Resource Hub`
+      : "Resource Hub";
 
     // Update favicon only if companyLogo is set
     if (config.companyLogo) {
@@ -236,13 +236,13 @@ const IndexView: FunctionComponent = () => {
             }}
           >
             <Typography level="h1" sx={{ mb: 1.5, fontWeight: 700 }}>
-              Developer Hub
+              Resource Hub
             </Typography>
             <Typography
               level="body-lg"
-              sx={{ color: "text.secondary", mb: 4, maxWidth: 500, mx: "auto" }}
+              sx={{ color: "text.secondary", mb: 4, maxWidth: 600, mx: "auto" }}
             >
-              Quick access to all your essential tools and resources
+              Quick access to all your company&apos;s resources
             </Typography>
             <Box
               ref={heroSearchRef}

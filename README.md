@@ -1,10 +1,10 @@
-# DevHub
+# Resource Hub
 
 <p align="center">
-  <img src="assets/screenshot.png" alt="DevHub Screenshot" style="border-radius: 12px;"/>
+  <img src="assets/screenshot.png" alt="Resource Hub Screenshot" style="border-radius: 12px;"/>
 </p>
 
-[Live Demo](https://naueramant.github.io/devhub/)
+[Live Demo](https://naueramant.github.io/resource-hub/)
 
 ## Features
 
@@ -30,8 +30,8 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/naueramant/devhub.git
-cd devhub
+git clone https://github.com/naueramant/resource-hub.git
+cd resource-hub
 
 # Install dependencies
 pnpm install

@@ -6,7 +6,7 @@ export const config: Config = {
   companyName: "ACME Corp",
   // companyLogo: "/logo.svg", // Place your logo in the public folder
   githubEditUrl:
-    "https://github.com/naueramant/devhub/blob/master/src/config.ts",
+    "https://github.com/naueramant/resource-hub/blob/master/src/config.ts",
 
   // Sorting options
   categorySorting: "defined",
@@ -35,7 +35,7 @@ export const config: Config = {
   linkTarget: "new-tab",
 };
 
-// Developer hub links
+// Links
 export const links: Link[] = [
   // Development
   {
